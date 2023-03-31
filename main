@@ -1,0 +1,26 @@
+import database
+import datetime
+
+database.create_tables()
+
+def prompt_blog_post():
+    username = input("What's your name? ")
+    password = input("Enter group password: ")
+    if password != '*****':
+        print('Invalid password. Exiting...')
+        exit()
+    else:
+        pass
+    post = input("What's happening? ")
+    date = input("What's the date? (mm-dd-YYYY) ")
+    try:
+        date_object = datetime.datetime.strptime(date, "%m-%d-%Y")
+        date = date_object.timestamp()
+    except ValueError:
+        print("Date format invalid. Try again.")
+        return None
+    print(f'"{post}" posted!')
+    database.upload_post(username, post, date)
+
+
+prompt_blog_post()
