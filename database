@@ -1,0 +1,27 @@
+import os
+import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
+
+CREATE_POSTS_TABLE = '''CREATE TABLE IF NOT EXISTS posts (
+    id SERIAL PRIMARY KEY,
+    username TEXT,
+    post TEXT,
+    date REAL
+    );'''
+
+INSERT_POST = "INSERT INTO posts(username, post, date) VALUES (%s,%s,%s);"
+
+connection = psycopg2.connect(os.environ['DATABASE_URL'])
+
+def create_tables():
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(CREATE_POSTS_TABLE)
+
+def upload_post(username, tweet, date):
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(INSERT_POST, (username, tweet, date))
+
